@@ -8,8 +8,8 @@ RUN npm install
 
 COPY . .
 
-EXPOSE 90
+EXPOSE 9091
 
-ENV PORT=90
+ENV PORT=9091
 
 ENTRYPOINT ["node", "backend_sample.js"]
