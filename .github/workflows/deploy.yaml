@@ -65,7 +65,7 @@ jobs:
 
             - name: "Remove any images on the system"
               run: |
-                sudo docker rmi $( sudo docker images -q)
+                sudo docker rmi -f $( sudo docker images -q)
                 
             - name: "Run the Docker image"
               run: |
@@ -74,5 +74,8 @@ jobs:
             - name: "copy docker image to backend_apitest"
               run: |
                 echo "copying image"
-                scp -r -i /home/ubuntu/mynewkey.pem -o StrictHostKeyChecking=no -o UserKnownHostsFile=/dev/null -o ProxyCommand="ssh -i /home/ubuntu/mynewkey.pem -o StrictHostKeyChecking=no -o UserKnownHostsFile=/dev/null ubuntu@34.208.93.12 -W %h:%p" /home/ubuntu/${{ steps.tag_generator.outputs.image_name }}:${{ steps.tag_generator.outputs.deployment_tag }} ubuntu@10.0.2.122:/home/ubuntu/
+                scp -i ~/.ssh/mynewkey.pem -o ProxyJump=ubuntu@34.208.93.12 ${{ steps.tag_generator.outputs.image_names }}:${{ steps.tag_generator.outputs.deployment_tag }} ubuntu@10.0.2.122:/home/ubuntu
+                
+              
+                # scp -r -i /home/ubuntu/mynewkey.pem -o StrictHostKeyChecking=no -o UserKnownHostsFile=/dev/null -o ProxyCommand="ssh -i /home/ubuntu/mynewkey.pem -o StrictHostKeyChecking=no -o UserKnownHostsFile=/dev/null ubuntu@34.208.93.12 -W %h:%p" /home/ubuntu/${{ steps.tag_generator.outputs.image_name }}:${{ steps.tag_generator.outputs.deployment_tag }} ubuntu@10.0.2.122:/home/ubuntu/
                 echo "done"
