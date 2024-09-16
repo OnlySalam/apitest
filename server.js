@@ -20,7 +20,7 @@ server.get("/", (request, response)  => {
 server.get("/submit_application", async (request, response) => {
 
     // sends the request to the backend
-    let feedback = await axios.get("http://10.0.2.0/submit");
+    let feedback = await axios.get("http://10.0.2.0/submits");
 
 
 
