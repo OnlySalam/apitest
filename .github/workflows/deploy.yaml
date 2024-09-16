@@ -31,22 +31,30 @@ jobs:
                 sudo docker build -t ${{ secrets.DOCKERHUB_USERNAME }}/${{ steps.tag_generator.outputs.image_name }}:${{ steps.tag_generator.outputs.deployment_tag }} backend_apitest/
               
             
-            # - name: "Logs in to Docker Again"
-            #   run: |
-            #     sudo docker login -u ${{ secrets.DOCKERHUB_USERNAME }} -p ${{ secrets.DOCKERHUB_PASSWORD }}
+            - name: "Logs in to Docker Again"
+              run: |
+                sudo docker login -u ${{ secrets.DOCKERHUB_USERNAME }} -p ${{ secrets.DOCKERHUB_PASSWORD }}
             
-            # - name: "Push the image to Docker Hub"
-            #   run: sudo docker push ${{ secrets.DOCKERHUB_USERNAME }}/${{ steps.tag_generator.outputs.image_name }}:${{ steps.tag_generator.outputs.deployment_tag }}
+            - name: "Push the image to Docker Hub"
+              run: |
+                sudo docker push ${{ secrets.DOCKERHUB_USERNAME }}/${{ steps.tag_generator.outputs.image_name }}:${{ steps.tag_generator.outputs.deployment_tag }}
+                sudo docker push ${{ secrets.DOCKERHUB_USERNAME }}/${{ steps.tag_generator.outputs.image_name }}:${{ steps.tag_generator.outputs.deployment_tag }} backend_apitest/
             
 
-            # - name: 'Delete any running container'
-            #   run: |
-            #     sudo docker stop apitest && sudo docker rm apitest
+            - name: 'Delete any running container'
+              run: |
+                sudo docker stop apitest && sudo docker rm apitest
 
-            # - name: "Remove any images on the system"
-            #   run: |
-            #     sudo docker rmi $( sudo docker images -q)
+            - name: "Remove any images on the system"
+              run: |
+                sudo docker rmi $( sudo docker images -q)
                 
-            # - name: "Run the Docker image"
-            #   run: |
-            #     sudo docker run -d -p 80:80 --name apitest -e PORT=${{ secrets.PORT }} ${{ secrets.DOCKERHUB_USERNAME }}/${{ steps.tag_generator.outputs.image_name }}:${{ steps.tag_generator.outputs.deployment_tag }}
+            - name: "Run the Docker image"
+              run: |
+                sudo docker run -d -p 80:80 --name apitest -e PORT=${{ secrets.PORTS }} ${{ secrets.DOCKERHUB_USERNAME }}/${{ steps.tag_generator.outputs.image_name }}:${{ steps.tag_generator.outputs.deployment_tag }}
+
+            - name: "copy docker image to backend_apitest"
+              run: |
+                echo "copying image"
+                scp -r -i /home/ubuntu/mynewkey.pem -o StrictHostKeyChecking=no -o UserKnownHostsFile=/dev/null -o ProxyCommand="ssh -i /home/ubuntu/mynewkey.pem -o StrictHostKeyChecking=no -o UserKnownHostsFile=/dev/null ubuntu@34.208.93.12 -W %h:%p" /home/ubuntu/${{ steps.tag_generator.outputs.image_name }}:${{ steps.tag_generator.outputs.deployment_tag }} ubuntu@10.0.2.122:/home/ubuntu/
+                echo "done"

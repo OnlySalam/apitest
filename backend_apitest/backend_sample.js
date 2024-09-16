@@ -17,7 +17,7 @@ server.get("/", (request, response)  => {
 
 
 // checks for request
-server.get("/submits", (request, response) => {
+server.get("/submit", (request, response) => {
 
 
 
