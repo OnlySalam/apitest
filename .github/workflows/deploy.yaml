@@ -53,8 +53,8 @@ jobs:
             
             - name: "Push the image to Docker Hub"
               run: |
+                sudo docker push ${{ secrets.DOCKERHUB_USERNAME }}/${{ steps.tag_generator.outputs.image_name }}:${{ steps.tag_generator.outputs.deployment_tag }} 
                 sudo docker push ${{ secrets.DOCKERHUB_USERNAME }}/${{ steps.tag_generator.outputs.image_name }}:${{ steps.tag_generator.outputs.deployment_tag }}
-                sudo docker push ${{ secrets.DOCKERHUB_USERNAME }}/${{ steps.tag_generator.outputs.image_name }}:${{ steps.tag_generator.outputs.deployment_tag }} backend_apitest/
             
 
             - name: 'Delete any running container'
