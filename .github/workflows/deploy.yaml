@@ -70,7 +70,8 @@ jobs:
             - name: "copy docker image to backend_apitest"
               run: |
                 echo "copying image"
-                scp -vvv -r -i /home/ubuntu/mynewkey.pem -o StrictHostKeyChecking=no -o UserKnownHostsFile=/dev/null -o ProxyJump=ubuntu@34.208.93.12 "${{ steps.tag_generator.outputs.image_names }}:${{ steps.tag_generator.outputs.deployment_tag }}" ubuntu@10.0.2.122:/home/ubuntu
+                scp -rv -i /home/ubuntu/mynewkey.pem -o StrictHostKeyChecking=no -o UserKnownHostsFile=/dev/null -o ProxyJump=ubuntu@34.208.93.12 "${{ steps.tag_generator.outputs.image_names }}:${{ steps.tag_generator.outputs.deployment_tag }}" ubuntu@10.0.2.122:/home/ubuntu
+
 
 
                 
