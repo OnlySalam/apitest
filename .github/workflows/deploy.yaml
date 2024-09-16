@@ -23,6 +23,8 @@ jobs:
                 echo "image_name=apitest" >> $GITHUB_OUTPUT
                 
                 
+
+
             - name: "Build a Docker Image"
               run: |
                 sudo docker build -t ${{ secrets.DOCKERHUB_USERNAME }}/${{ steps.tag_generator.outputs.image_name }}:${{ steps.tag_generator.outputs.deployment_tag }} .
